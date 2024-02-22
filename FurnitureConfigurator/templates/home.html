@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Personnalisation de Meuble</title>
+</head>
+<body>
+<h1>Bienvenue sur notre configurateur de meubles</h1>
+
+{% if messages %}
+{% for message in messages %}
+<div class="{{ message.tags }}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in TypeSelectorForm %}
+    <div>
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+    </div>
+    {% endfor %}
+    <button type="submit", value="TypeSelectorForm">Soumettre</button>
+</form>
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div>
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+    </div>
+    {% endfor %}
+    <button type="submit", value="form">Soumettre</button>
+</form>
+
+
+</body>
+</html>
