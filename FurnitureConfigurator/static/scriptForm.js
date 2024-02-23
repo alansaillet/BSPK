@@ -35,12 +35,12 @@ class FieldTree {
 
         if (this.parentConditionalValue === parentSelectedValue && this.parent.isVisible == true) {
             this.isVisible = true
-            element.disabled=false
+            //element.disabled=false
 
             element.parentNode.style.display = ''; // Show
         } else {
             this.isVisible = false
-            element.disabled=true
+            //element.disabled=true
 
             element.parentNode.style.display = 'none'; // Hide
         }

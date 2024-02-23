@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
 
-from .models import Furnitures
+from .models import Furniture
 from .forms import FurnituresForm
 
 def home(request):

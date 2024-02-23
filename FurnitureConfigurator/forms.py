@@ -1,7 +1,7 @@
 from django import forms
-from .models import Furnitures
+from .models import Furniture
 
 class FurnituresForm(forms.ModelForm):
     class Meta:
-        model = Furnitures
+        model = Furniture
         fields = '__all__'
