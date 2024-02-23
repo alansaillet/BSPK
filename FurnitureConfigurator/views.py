@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.contrib import messages
 
-from .models import Table
-from .forms import TableForm, ChairForm, TypeSelectorForm
+from .models import Furnitures
+from .forms import FurnituresForm
 
 def home(request):
     if request.method == "POST":
-        form = ChairForm(request.POST)
+        form = FurnituresForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your form has been saved successfully!')
@@ -14,5 +14,5 @@ def home(request):
             print(form.errors)  # Print errors to console
             messages.error(request, 'Error saving form.')
     else:
-        form =  ChairForm()
-    return render(request, 'home.html', {"TypeSelectorForm":TypeSelectorForm,"form": form})
+        form =  FurnituresForm()
+    return render(request, 'home.html', {"form":form})

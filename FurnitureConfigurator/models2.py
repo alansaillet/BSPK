@@ -10,8 +10,10 @@ class FieldTree:
 
         self.subfields = []
         self.parentChoice = None
-        self.choices = None
         self.choice = None
+
+    def setChoice(self,value):
+        self.choice = value
 
     def add_subfield(self,parentChoice, subfield):
         subfield = copy.copy(subfield)
@@ -22,7 +24,6 @@ class FieldTree:
         print(self.parentChoice, self.name)
         for subfield in self.subfields:
             subfield.print()
-
 
 root = FieldTree(name="type", field=models.CharField(max_length=100,choices=(("Chair","Chaise"),("Table","Table"))))
 

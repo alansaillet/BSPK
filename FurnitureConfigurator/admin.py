@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Table, Chair
+from .models import Furnitures
 
-admin.site.register(Table)
-admin.site.register(Chair)
+admin.site.register(Furnitures)

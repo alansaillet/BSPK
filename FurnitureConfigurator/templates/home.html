@@ -3,6 +3,86 @@
 <head>
     <title>Personnalisation de Meuble</title>
 </head>
+
+<script>
+class FieldTree {
+    constructor(name, field) {
+        this.name = name;
+        this.field = field;
+        this.subfields = [];
+        this.parentChoice = null; // Store parent choice's name
+        this.element_id = "id_"+name
+    }
+
+    addSubfield(parentChoice, subfield) {
+        subfield.parentChoice = parentChoice;
+        this.subfields.push(subfield);
+    }
+
+    initialize() {
+        // Find the DOM element corresponding to this field
+        const element = document.getElementById(this.element_id);
+        console.log(this.element_id)
+        if (!element) return;
+        console.log("has loaded")
+        // If this is a choice field, add an event listener
+        if (this.field.type === 'select') {
+            console.log("is select")
+            element.addEventListener('change', () => {
+                this.subfields.forEach(subfield => subfield.toggleVisibility(element.value));
+            });
+        }
+
+        // Initialize all subfields
+        this.subfields.forEach(subfield => subfield.initialize());
+    }
+
+    toggleVisibility(selectedValue) {
+        console.log("toggleVisibility")
+        console.log(this.element_id)
+        const element = document.getElementById(this.element_id);
+        if (!element) return;
+        console.log("element get OK")
+        // Show or hide the element based on the parent choice
+        if (this.parentChoice === selectedValue) {
+            element.parentNode.style.display = ''; // Show
+        } else {
+            element.parentNode.style.display = 'none'; // Hide
+        }
+
+        // For select fields, reset value when hidden
+        if (element.style.display === 'none' && this.field.type === 'select') {
+            element.value = '';
+            // Trigger change event to update dependent subfields
+            element.dispatchEvent(new Event('change'));
+        }
+    }
+
+    print() {
+        console.log(this.parentChoice, this.name);
+        this.subfields.forEach(subfield => subfield.print());
+    }
+}
+
+
+const root = new FieldTree("furnituretype", {type: "select"});
+
+const chairbacktype = new FieldTree("chairbacktype", {type: "select"});
+const nbrods = new FieldTree("nbrods", {type: "other"}, 'id_nbrods');
+
+chairbacktype.addSubfield("rods", nbrods); // chair back type is a subfield of "chair" choice
+root.addSubfield("chair", chairbacktype); // chair back type is a subfield of "chair" choice
+
+// Initialize the tree to add event listeners and set initial visibility
+window.addEventListener('DOMContentLoaded', () => {
+    root.initialize();
+});
+
+</script>
+
+
+
+
 <body>
 <h1>Bienvenue sur notre configurateur de meubles</h1>
 
@@ -16,19 +96,8 @@
 
 <form method="post">
     {% csrf_token %}
-    {% for field in TypeSelectorForm %}
-    <div>
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-    </div>
-    {% endfor %}
-    <button type="submit", value="TypeSelectorForm">Soumettre</button>
-</form>
-
-<form method="post">
-    {% csrf_token %}
     {% for field in form %}
-    <div>
+    <div id={{field.name}}>
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {{ field }}
     </div>
