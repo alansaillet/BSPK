@@ -9,9 +9,9 @@ class Furniture(models.Model):
     thickness_backchair = models.IntegerField(default=5,validators=[MinValueValidator(5),MaxValueValidator(12)])
     nbrods = models.IntegerField(default=3,validators=[MinValueValidator(3),MaxValueValidator(10)])
     #table
-    length = models.FloatField(default=0,validators=[MinValueValidator(100),MaxValueValidator(250)])
-    width = models.FloatField(default=0,validators=[MinValueValidator(100),MaxValueValidator(2500)])
-    height = models.FloatField(default=0,validators=[MinValueValidator(100),MaxValueValidator(2000)])
+    length = models.FloatField(default=130,validators=[MinValueValidator(100),MaxValueValidator(250)])
+    width = models.FloatField(default=50,validators=[MinValueValidator(30),MaxValueValidator(250)])
+    height = models.FloatField(default=80,validators=[MinValueValidator(30),MaxValueValidator(130)])
     # Ajoutez d'autres champs selon vos besoins
 
     def __str__(self):

@@ -35,14 +35,18 @@ class FieldTree {
 
         if (this.parentConditionalValue === parentSelectedValue && this.parent.isVisible == true) {
             this.isVisible = true
-            //element.disabled=false
-
             element.parentNode.style.display = ''; // Show
+
+            //element.disabled=false
+            //element.required=true
+
+
         } else {
             this.isVisible = false
-            //element.disabled=true
-
             element.parentNode.style.display = 'none'; // Hide
+
+            //element.disabled=true
+            //element.required=false
         }
         this.subfields.forEach(subfield => subfield.toggleVisibility(element.value));
     }
