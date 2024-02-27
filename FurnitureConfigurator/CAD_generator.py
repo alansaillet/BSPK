@@ -64,11 +64,17 @@ def generateShape(length, width,height):
     )
 
     # Save the GLTF model to a temporary file
-    gltf_path = os.path.join(settings.MEDIA_URL, f"tmp_{uuid4()}.gltf")
-    print(gltf_path)
-    print(settings.MEDIA_URL)
-    assembly.save(gltf_path)
+    filename = f"tmp_{uuid4()}.gltf"
+    gltf_path_MEDIA_ROOT = os.path.join(settings.MEDIA_ROOT, filename)
+    gltf_path_MEDIA_URL = os.path.join(settings.MEDIA_URL, filename)
 
+    if not os.path.exists(settings.MEDIA_ROOT):
+        os.makedirs(settings.MEDIA_ROOT)
+
+    assembly.save(gltf_path_MEDIA_ROOT)
+
+    print(gltf_path_MEDIA_ROOT)
+    print(gltf_path_MEDIA_URL)
     print("saved(?).")
     return_and_delete_file = False
     if return_and_delete_file:
@@ -82,7 +88,8 @@ def generateShape(length, width,height):
         # At this point, `in_memory_file` contains your GLTF model data in memory
         return in_memory_file
     else:
-        return gltf_path
+        return filename
+
 
 if __name__ == "__main__":
     generateShape(1,1,1)

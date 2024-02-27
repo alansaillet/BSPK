@@ -18,6 +18,15 @@ function init() {
     renderer.setClearColor("rgb(20,20,20)");
     renderer.setSize(window.innerWidth, window.innerHeight);
 
+    // Add an ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 20);
+    scene.add(ambientLight);
+
+    // Add a directional light
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 1);
+    scene.add(directionalLight);
+
     //Filepath
 
     // Define the default static GLTF path
@@ -42,7 +51,7 @@ function init() {
         function(gltf) {
             model = gltf.scene;
             // Make the model grey
-            const greyMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+            const greyMaterial = new THREE.MeshStandardMaterial({ color: "rgb(200,200,200)" , wireframe: true});
             model.traverse(child => {
                 if (child.isMesh) {
                     child.material = greyMaterial;
