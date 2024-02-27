@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';// Define variables
 
-
 // Define variables
 let scene, camera, renderer, model;
 
@@ -19,10 +18,27 @@ function init() {
     renderer.setClearColor("rgb(20,20,20)");
     renderer.setSize(window.innerWidth, window.innerHeight);
 
+    //Filepath
+
+    // Define the default static GLTF path
+    let defaultGltfPath = '/static/out.gltf';
+
+    // Try to get the dynamic GLTF URL from the HTML element
+    const gltfUrlElement = document.getElementById('gltfUrl');
+    let gltfPath = defaultGltfPath; // Use the default path initially
+
+    // Check if the element exists and has a non-empty URL
+    if (gltfUrlElement && gltfUrlElement.getAttribute('data-url')) {
+        gltfPath = gltfUrlElement.getAttribute('data-url'); // Use the dynamic path if available
+    }
+
     // Load GLTF model
     const loader = new GLTFLoader();
+    console.log("test1")
+    console.log(defaultGltfPath)
+    console.log(gltfPath)
     loader.load(
-        '/static/out.gltf',
+        gltfPath,
         function(gltf) {
             model = gltf.scene;
             // Make the model grey

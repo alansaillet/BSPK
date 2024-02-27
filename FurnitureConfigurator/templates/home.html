@@ -18,7 +18,8 @@
 <script type="module" src="{% static 'threeCode.js' %}"></script>
 
 <body>
-<h1>Config {% static '/three/v0.161.0/build/three.module.min.js' %}</h1>
+<h1>Config {{gltf_url}}</h1>
+<div id="gltfUrl" data-url="{{ gltf_url }}" style="display:none;"></div>
 
 {% if messages %}
 {% for message in messages %}

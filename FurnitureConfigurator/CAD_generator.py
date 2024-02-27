@@ -1,8 +1,15 @@
-import cadquery as cq
-from cadquery.occ_impl.assembly import AssemblyProtocol, toCAF, toVTK, toFusedCAF
+import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BespokeFurnitures.settings')
+django.setup()
+from django.conf import settings
+
 from uuid import uuid4
 import io
 import os
+
+import cadquery as cq
+from cadquery.occ_impl.assembly import toCAF
 
 from typing import Optional
 if 0:
@@ -48,7 +55,7 @@ if 0:
         return result"""
 
 def generateShape(length, width,height):
-    print("start computation...")
+    print("start computation...",end="")
     result = cq.Workplane("front").box(length,width,height)
 
     assembly = (
@@ -57,17 +64,25 @@ def generateShape(length, width,height):
     )
 
     # Save the GLTF model to a temporary file
-    gltf_path = f"/tmp/tmp_{uuid4()}.gltf"
+    gltf_path = os.path.join(settings.MEDIA_URL, f"tmp_{uuid4()}.gltf")
+    print(gltf_path)
+    print(settings.MEDIA_URL)
     assembly.save(gltf_path)
 
-    # Read the temporary file into memory
-    with open(gltf_path, 'rb') as temp_file:
-        in_memory_file = io.BytesIO(temp_file.read())
+    print("saved(?).")
+    return_and_delete_file = False
+    if return_and_delete_file:
+        # Read the temporary file into memory
+        with open(gltf_path, 'rb') as temp_file:
+            in_memory_file = io.BytesIO(temp_file.read())
 
-    # Optionally, delete the temporary file
-    #os.remove(gltf_path)
+        # Optionally, delete the temporary file
+        #os.remove(gltf_path)
 
-    # At this point, `in_memory_file` contains your GLTF model data in memory
-    return in_memory_file
+        # At this point, `in_memory_file` contains your GLTF model data in memory
+        return in_memory_file
+    else:
+        return gltf_path
 
-generateShape(1,1,1)
+if __name__ == "__main__":
+    generateShape(1,1,1)
