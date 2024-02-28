@@ -11,13 +11,9 @@ import os
 import cadquery as cq
 from cadquery.occ_impl.assembly import toCAF
 
-from typing import Optional
-if 0:
+from math import cos,sin,pi
 
-    from OCP.RWGltf import RWGltf_CafWriter
-    from OCP.TCollection import TCollection_ExtendedString, TCollection_AsciiString
-    from OCP.TColStd import TColStd_IndexedDataMapOfStringString
-    from OCP.Message import Message_ProgressRange
+if 0:
 
     def exportGLTF(
             assy,
@@ -54,14 +50,26 @@ if 0:
         assy.loc = orig_loc
         return result"""
 
+def CAD1(l1,l2,l3):
+    def surface(t1, t2):
+        R = 10
+        t2_2 = (t2 - 1 / 2) * 2 * pi
+        x = l1 * cos(t1 * 1 * pi) * cos(t2_2)
+        y = l2 * sin(t1 * 1 * pi) * cos(t2_2)
+        z = l3 * sin(t2_2)
+        return (x, y, z)
+
+    res = cq.Workplane().parametricSurface(surface, N=8)
+
+    return res
+
 def generateShape(length, width,height):
     print("start computation...",end="")
-    result = cq.Workplane("front").box(length,width,height)
-
+    """result = cq.Workplane("front").box(length,width,height)"""
+    result = CAD1(length,width,height)
     assembly = (
         cq.Assembly()
-            .add(result, name="result1")
-    )
+        .add(result, name="result1"))
 
     # Save the GLTF model to a temporary file
     filename = f"tmp_{uuid4()}.gltf"
