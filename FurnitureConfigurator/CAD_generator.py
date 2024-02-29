@@ -53,13 +53,16 @@ if 0:
 def CAD1(l1,l2,l3):
     def surface(t1, t2):
         R = 10
-        t2_2 = (t2 - 1 / 2) * 2 * pi
-        x = l1 * cos(t1 * 1 * pi) * cos(t2_2)
-        y = l2 * sin(t1 * 1 * pi) * cos(t2_2)
-        z = l3 * sin(t2_2)
+        t2_2 = (t2 - 1 / 2)  * pi
+        offset = l2
+        rfactor = (cos(t1 * l1 * 2 * pi )+1)/2
+        rfactor = (rfactor + offset) / (1+ offset)
+        x = R*rfactor * cos(t1 * 2 * pi ) * cos(t2_2)
+        y = R*rfactor * sin(t1 * 2 * pi ) * cos(t2_2)
+        z = R * sin(t2_2)
         return (x, y, z)
 
-    res = cq.Workplane().parametricSurface(surface, N=8)
+    res = cq.Workplane().parametricSurface(surface)
 
     return res
 
@@ -79,7 +82,7 @@ def generateShape(length, width,height):
     if not os.path.exists(settings.MEDIA_ROOT):
         os.makedirs(settings.MEDIA_ROOT)
 
-    assembly.save(gltf_path_MEDIA_ROOT)
+    assembly.save(gltf_path_MEDIA_ROOT,tolerance=0.5,angularTolerance=0.2)
 
     print(gltf_path_MEDIA_ROOT)
     print(gltf_path_MEDIA_URL)
